@@ -1,5 +1,7 @@
 ### Web2Warc - your custom Web crawler
 
+An easy-to-use and highly customizable crawler that enables you to create your own little Web archives (WARC/CDX).
+
 #### Setup
 
 To use Web2Warc you need to have [Scala](http://www.scala-lang.org) as well as [SBT](http://www.scala-sbt.org). Both are free and quickly installed.
