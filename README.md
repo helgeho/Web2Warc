@@ -7,6 +7,7 @@ An easy-to-use and highly customizable crawler that enables you to create your o
 To use Web2Warc you need to have [Scala](http://www.scala-lang.org) as well as [SBT](http://www.scala-sbt.org). Both are free and quickly installed.
 
 As the next step clone and build this repository:
+
 1. `git clone https://github.com/helgeho/Web2Warc.git`
 2. `sbt assembly` (inside the project folder)
 
@@ -17,6 +18,7 @@ Now you should have a `web2warc-assembly-1.0.jar` file under `target/scala-2.10`
 We provide an example crawl specification under [`crawls/example.scala`](crawls/example.scala). In order to create your own one, simply copy this file and modify it according to your requirements.
 
 To run a crawl specification (here `example.scala`) just run `scala -cp ../target/scala-2.10/web2warc-assembly-1.0.jar example.scala` inside the `crawls` folder, or use the provided `run.sh` script:
+
 `./run.sh example.scala`
 
 The resulting CDX and WARC files can be found under `crawls/out` or the path specified in the spec.
