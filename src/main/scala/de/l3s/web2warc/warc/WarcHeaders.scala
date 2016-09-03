@@ -43,7 +43,7 @@ object WarcHeaders {
         header.append("WARC-Type: warcinfo").append(Br)
         header.append("WARC-Date: " + LocalDateTime.now + "Z").append(Br)
         header.append("WARC-Filename: " + filename).append(Br)
-        header.append("WARC-Record-ID: <" + warcRecordID()).append(Br)
+        header.append("WARC-Record-ID: <" + warcRecordID() +">").append(Br)
         header.append("Content-Type: application/warc-fields").append(Br)
 
         val headerBody = StringBuilder.newBuilder
