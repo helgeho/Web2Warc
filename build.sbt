@@ -15,11 +15,11 @@ lazy val web2warc = (project in file(".")).
       "org.jsoup" % "jsoup" % "1.8.3",
       "commons-io" % "commons-io" % "2.4",
       "org.apache.httpcomponents" % "httpclient" % "4.5.1",
-      "org.netpreserve.commons" % "webarchive-commons" % "1.1.5"
+      "org.netpreserve.commons" % "webarchive-commons" % "1.1.5" excludeAll(
+        ExclusionRule(organization = "org.apache.hadoop"))
     ),
     resolvers ++= Seq(
-      "cloudera" at "https://repository.cloudera.com/artifactory/cloudera-repos",
-      "internetarchive" at "http://builds.archive.org:8080/maven2"
+      "cloudera" at "https://repository.cloudera.com/artifactory/cloudera-repos"
     )
   )
 
