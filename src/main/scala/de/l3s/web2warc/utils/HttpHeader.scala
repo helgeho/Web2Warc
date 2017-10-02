@@ -22,22 +22,33 @@
  * SOFTWARE.
  */
 
-package de.l3s.web2warc
+package de.l3s.web2warc.utils
 
-import de.l3s.web2warc.crawling._
-import de.l3s.web2warc.crawling.components.{CrawlStrategyDef, CrawlStrategy, CrawlSpecification, CrawlInfo}
-import de.l3s.web2warc.crawling.components.io.{CrawlWriter, WarcCdxWriter}
-import de.l3s.web2warc.utils.{SURT, Html}
+object HttpHeader {
+  val RedirectLocationHeaderField = "Location"
+  val RemoteAddrHeaderField = "Remote_Addr"
+  val MimeTypeHeaderField = "Content-Type"
 
-object Web2Warc {
-  var crawl = new CrawlInfo
-  var seeds = Set[String]()
-  var strategyDef = new CrawlStrategyDef
-  var strategy: CrawlStrategy = strategyDef
-  var spec = new CrawlSpecification
-  var writer: CrawlWriter = new WarcCdxWriter
+  def apply(headers: Map[String, String]): HttpHeader = new HttpHeader(headers)
+}
 
-  def addSeedUrl(url: String) = seeds += url
+class HttpHeader(val headers: Map[String, String]) {
+  lazy val ip = headers.get(HttpHeader.RemoteAddrHeaderField)
 
-  def run() = new Crawler(seeds, strategy, spec, writer).run(crawl)
+  lazy val mime = headers.get(HttpHeader.MimeTypeHeaderField).map(m => m.split(';').head.trim)
+
+  lazy val mimeTypeParamter = headers.get(HttpHeader.MimeTypeHeaderField).flatMap{m =>
+    val split = m.split(';')
+    if (split.tail.nonEmpty) {
+      val parameterSplit = split(1).split('=')
+      Some((parameterSplit(0).trim, if (parameterSplit.tail.nonEmpty) parameterSplit(1).trim else null))
+    } else None
+  }
+
+  lazy val charset = mimeTypeParamter match {
+    case Some((key, value)) => if (key == "charset") Option(value) else None
+    case None => None
+  }
+
+  lazy val redirectLocation = headers.get(HttpHeader.RedirectLocationHeaderField)
 }

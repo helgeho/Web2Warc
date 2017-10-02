@@ -29,26 +29,22 @@ import java.io.{ByteArrayInputStream, InputStream}
 import org.apache.commons.io.IOUtils
 import org.apache.http.entity.ByteArrayEntity
 import org.apache.http.util.EntityUtils
-import org.archive.format.http.{HttpHeader, HttpResponseParser}
+import org.archive.format.http.HttpResponseParser
 
 import scala.collection.JavaConverters._
 import scala.util.Try
 
 object HttpResponse {
+  val DefaultChartset = "UTF-8"
+
   def apply(bytes: Array[Byte]): HttpResponse = new HttpResponse(bytes)
 }
 
 class HttpResponse (val bytes: Array[Byte]) {
-  val RedirectLocationHeaderField = "Location"
-  val RemoteAddrHeaderField = "Remote_Addr"
-  val MimeTypeHeaderField = "Content-Type"
-
-  private var _header: collection.mutable.Map[String, String] = null
+  private var _header: HttpHeader = null
   private var _payload: Array[Byte] = null
 
   lazy val response = {
-    _header = collection.mutable.Map[String, String]()
-
     var httpResponse: InputStream = null
     try {
       httpResponse = new ByteArrayInputStream(bytes)
@@ -57,9 +53,11 @@ class HttpResponse (val bytes: Array[Byte]) {
       val response = parser.parse(httpResponse)
       val httpHeaders = response.getHeaders
 
-      for (httpHeader: HttpHeader <- httpHeaders.iterator().asScala) {
-        _header.put(httpHeader.getName, httpHeader.getValue)
+      val header = collection.mutable.Map[String, String]()
+      for (httpHeader <- httpHeaders.iterator().asScala) {
+        header.put(httpHeader.getName, httpHeader.getValue)
       }
+      _header = new HttpHeader(header.toMap)
 
       _payload = IOUtils.toByteArray(httpResponse)
 
@@ -73,13 +71,7 @@ class HttpResponse (val bytes: Array[Byte]) {
 
   lazy val payload = { response; _payload }
 
-  lazy val stringContent = Try {EntityUtils.toString(new ByteArrayEntity(payload)).trim}
-
-  def ip = header.get(RemoteAddrHeaderField)
+  lazy val stringContent = Try {EntityUtils.toString(new ByteArrayEntity(payload), header.charset.getOrElse(HttpResponse.DefaultChartset)).trim}
 
   def status = Try { response.getMessage.getStatus }
-
-  def mime = header.get(MimeTypeHeaderField).map(m => m.split(';').head.trim)
-
-  def redirectLocation = header.get(RedirectLocationHeaderField)
 }

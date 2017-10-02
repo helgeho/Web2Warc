@@ -40,7 +40,7 @@ object HttpClientReader {
     "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
   )
 
-  lazy val client = HttpClientBuilder.create().setSSLContext(SSLContexts.createSystemDefault()).build()
+  lazy val client = HttpClientBuilder.create().disableRedirectHandling().setSSLContext(SSLContexts.createSystemDefault()).build()
 
   def get(url: String, headers: Map[String, String] = defaultHeaders): Array[Byte] = {
     val uri = new URI(url)

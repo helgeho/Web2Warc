@@ -73,7 +73,7 @@ object WarcHeaders {
         header.append("WARC-Target-URI: " + capture.url).append(Br)
         header.append("WARC-Date: " + capture.timestamp + "Z").append(Br)
         header.append("WARC-Payload-Digest: sha1:" + DigestUtils.sha1Hex(bytes)).append(Br)
-        header.append("WARC-IP-Address: " + capture.response.ip.getOrElse("-")).append(Br)
+        header.append("WARC-IP-Address: " + capture.response.header.ip.getOrElse("-")).append(Br)
         header.append("WARC-Record-ID: <" + warcRecordID() + ">").append(Br)
         header.append("Content-Type: application/http; msgtype=response").append(Br)
         header.append("Content-Length: " + bytes.length).append(Br)

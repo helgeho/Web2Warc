@@ -75,10 +75,11 @@ class Crawler(val seeds: Set[String], val strategy: CrawlStrategy, val spec: Cra
 
             val currentLevel = next.level
             val nextLevel = currentLevel + 1
+
             // maxLevel -1 should disable limit and 0 should crawl only one document
-            if (nextLevel <= spec.maxLevel || spec.maxLevel == -1) {
+            if (nextLevel <= spec.maxLevel || spec.maxLevel < 0) {
               if (spec.followRedirects) {
-                for (redirectUrl <- response.redirectLocation) enqueue(url, redirectUrl, currentLevel, redirect = true)
+                for (redirectUrl <- response.header.redirectLocation) enqueue(url, redirectUrl, currentLevel, redirect = true)
               }
               for (nextUrl <- strategy.getUrls(response)) enqueue(url, nextUrl, currentLevel, redirect = false)
             }
@@ -110,12 +111,8 @@ class Crawler(val seeds: Set[String], val strategy: CrawlStrategy, val spec: Cra
       val canonicalUrl = strategy.canonicalUrl(fullUrl)
       if (!queuedUrls.contains(canonicalUrl) && !doneUrls.contains(canonicalUrl)) {
         val increaseLevel = (!redirect || spec.increaseLevelOnRedirect) && strategy.increaseLevel(baseUrl, fullUrl)
-        var _new_level = currentLevel
-        if (increaseLevel) _new_level += 1
-        if (_new_level <= spec.maxLevel) {
-          _queue = _queue.enqueue(QueuedUrl(fullUrl, _new_level))
-          queuedUrls += canonicalUrl
-        }
+        _queue = _queue.enqueue(QueuedUrl(fullUrl, if (increaseLevel) currentLevel + 1 else currentLevel))
+        queuedUrls += canonicalUrl
       }
     }
   }

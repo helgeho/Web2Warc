@@ -31,7 +31,7 @@ class CrawlStrategyDef extends CrawlStrategy {
   var canonicalUrl: (String) => String = (url) => SURT.fromUrl(url)
   var resourceId: (String, HttpResponse) => String = (url, response) => canonicalUrl.apply(url)
   var getUrls: (HttpResponse) => Iterable[String] = (response) => {
-    if (response.mime.getOrElse("").toLowerCase == "text/html") {
+    if (response.header.mime.getOrElse("").toLowerCase == "text/html") {
       response.stringContent.map(str => Html(str).getAttributes("a", "href").map(a => a.getValue)).getOrElse(Seq())
     } else Seq()
   }

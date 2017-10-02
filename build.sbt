@@ -4,7 +4,7 @@ import sbt.Keys._
 
 lazy val commonSettings = Seq(
   name := "web2warc",
-  version := "1.0",
+  version := "1.1",
   organization := "de.l3s"
 )
 

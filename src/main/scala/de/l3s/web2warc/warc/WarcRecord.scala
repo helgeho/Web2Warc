@@ -44,10 +44,10 @@ case class WarcRecord(header: Array[Byte], capture: Capture, offset: Long, filen
     line ++= capture.surtUrl ++= CdxDelimiter
     line ++= capture.timestamp.format(CdxTimeFormat) ++= CdxDelimiter
     line ++= encodeUrl(capture.url) ++= CdxDelimiter
-    line ++= capture.response.mime.map(m => m.replace(CdxDelimiter, CdxDelimiterReplacement)).getOrElse(CdxNotAvailableStr) ++= CdxDelimiter
+    line ++= capture.response.header.mime.map(m => m.replace(CdxDelimiter, CdxDelimiterReplacement)).getOrElse(CdxNotAvailableStr) ++= CdxDelimiter
     line ++= capture.response.status.map(s => s.toString).getOrElse(CdxNotAvailableStr) ++= CdxDelimiter
     line ++= DigestUtils.sha1Hex(capture.response.bytes) ++= CdxDelimiter
-    line ++= capture.response.redirectLocation.map(url => encodeUrl(url)).getOrElse(CdxNotAvailableStr) ++= CdxDelimiter
+    line ++= capture.response.header.redirectLocation.map(url => encodeUrl(url)).getOrElse(CdxNotAvailableStr) ++= CdxDelimiter
     line ++= meta.replace(CdxDelimiter, CdxDelimiterReplacement) ++= CdxDelimiter
     line ++= length.toString ++= CdxDelimiter
     line ++= offset.toString ++= CdxDelimiter

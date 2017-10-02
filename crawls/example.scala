@@ -3,7 +3,7 @@ import de.l3s.web2warc.Web2Warc
 Web2Warc.crawl.name = "Example" // the name of the crawl
 Web2Warc.crawl.publisher = "Anonymous" // your name or company, just for the records, not sent to the server
 
-Web2Warc.writer.path = "out" // the output path
+Web2Warc.writer.path = "crawls" // the output path
 
 Web2Warc.spec.maxLevel = 10 // follow at most 10 links
 Web2Warc.spec.urlRegex = "[^:]+://([^/]*.|)example.com(/.*|$)" // crawl only within the domain example.com
