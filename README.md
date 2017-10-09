@@ -4,6 +4,8 @@ An easy-to-use and highly customizable crawler that enables you to create your o
 
 #### Setup
 
+(if you want to use *Web2Warc* as a library in your own project, please read [here](#Maven-Central))
+
 To use Web2Warc you need to have [Scala](http://www.scala-lang.org) as well as [SBT](http://www.scala-sbt.org). Both are free and quickly installed.
 
 As the next step clone and build this repository:
@@ -48,6 +50,13 @@ Web2Warc.run()
 #### Analysis / Corpus Extraction
 
 In order to analyze crawls created with Web2Warc or to build a corpus for your research from the resulting archive, please have a look at the [ArchiveSpark](https://github.com/helgeho/ArchiveSpark) project.
+
+#### Maven Central
+
+If you want to use *Web2Warc* as a library in your own project, you can get it from Maven Central by adding it as a dependency to your `build.sbt`:
+```
+libraryDependencies += "com.github.helgeho" % "web2warc" % "1.1"
+```
 
 #### License
 
