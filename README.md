@@ -4,7 +4,7 @@ An easy-to-use and highly customizable crawler that enables you to create your o
 
 #### Setup
 
-(if you want to use *Web2Warc* as a library in your own project, please read [here](#Maven-Central))
+(if you want to use *Web2Warc* as a library in your own project, please read [here](#maven-central))
 
 To use Web2Warc you need to have [Scala](http://www.scala-lang.org) as well as [SBT](http://www.scala-sbt.org). Both are free and quickly installed.
 
